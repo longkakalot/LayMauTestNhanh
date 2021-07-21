@@ -1,0 +1,142 @@
+﻿@model IEnumerable<LayMauTestNhanh>
+
+@{
+    var stt = 1;
+    var codeXn = ViewBag.CodeXn;
+}
+
+@*<div class="card">
+        <div class="card-header bg-info" style="padding-bottom: 0px; padding-top: 5px">
+            <h5 class="card-title text-white">
+                Danh sách
+            </h5>
+        </div>
+
+    </div>*@
+
+<div class="float-right">
+    <button id="btnXemDanhSachChuaLayMau" class="btn btn-primary">Xem danh sách</button>
+</div>
+<table id="tblDanhSachLayMau" class="table display table-striped table-bordered" style="width:100%; font-size: 13px; color: black">
+    <thead>
+        <tr class="text-center">
+            <th style="width: 5%">STT</th>
+            <th style="width: 5%">Mã Y tế</th>
+            <th style="width: 10%">Họ tên</th>
+            <th style="width: 5%">Năm sinh</th>
+            <th style="width: 5%">Giới tính</th>
+            <th style="width: 10%">Điện thoại</th>
+
+            <th style="width: 10%">Tên chỉ định</th>
+            <th style="width: 10%">Thời gian chỉ định</th>     
+            @*<th>Người lấy mẫu</th>*@ 
+            <th style="width: 5%">Code Xn</th>
+            <th style="width: 10%">Đối tượng</th>
+            <th style="width: 10%">Xử lý</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(m=>m.ThoiGian))
+        {
+            <tr>
+                <td>@(stt++)</td>
+                <td style="color: blue; font-weight: bold">@item.MaYTe</td>
+                <td style="color: blue; font-weight: bold">@item.TenBenhNhan</td>
+                <td style="color: blue; font-weight: bold">@item.NamSinh</td>
+                <td>
+                    @if (item.GioiTinh == "F")
+                    {
+                        <p>Nữ</p>
+                    }
+                    else
+                    {
+                        <p>Nam</p>
+                    }
+                </td>
+                <td>@item.SoDienThoai</td>
+                <td>@item.DichVu</td>
+                <td>@item.ThoiGian</td>
+                @*<td>
+                    <span class="btn btn-primary" onclick="InsertKetQua(@item.Id, false)">Âm tính</span>
+                </td>
+                <td>
+                    <span class="btn btn-danger" onclick="InsertKetQua(@item.Id, true)">Dương tính</span>
+                </td>*@
+                @*<td>@item.NguoiLayMau</td>*@
+                <td>@(codeXn++)</td>
+                <td>
+                    @if(item.ThanhToan == 0)
+                    {
+                        <span class="btn btn-info">Theo Yêu cầu</span>
+                    }                    
+                </td>
+                <td>
+                    <span class="btn btn-primary" onclick="LayMau(@item.Id, '@item.NguoiLayMau')">Lấy mẫu</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@{
+    <script>
+        function InsertKetQua(id, ketqua) {            
+            $.ajax({
+                type: "GET",
+                url: "/Home/InsertKetQua",
+                //data: JSON.stringify(objArr),
+                data: { 'id': id, 'ketqua': ketqua },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (responses) {
+                    if (responses === 1 || responses === "1") {
+                        GetListLayMauTestNhanhChuaKetQua();
+                        //GetListLayMauTestNhanhCoKetQua();
+                    } else {
+                        swal.fire("Thêm dữ liệu bị lỗi");
+                    }
+                },
+                failure: function (response) {
+                    alert("failure: GetListLayMauTestNhanh" + response.responseText);
+                },
+                error: function (response) {
+                    alert("error: GetListLayMauTestNhanh" + response.responseText);
+                }
+            });
+        }
+        function LayMau(id, nguoilaymau) {
+            $.ajax({
+                type: "GET",
+                url: "/Home/Insert",
+                //data: JSON.stringify(objArr),
+                data: { 'id': id, 'nguoilaymau': nguoilaymau },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (responses) {
+                    if (responses === 1 || responses === "1") {
+                        GetListChiDinhChuaLayMau();
+                        GetListChiDinhDaLayMau();
+                    } else {
+                        swal.fire("Thêm dữ liệu bị lỗi");
+                    }
+                },
+                failure: function (response) {
+                    alert("failure: GetListLayMauTestNhanh" + response.responseText);
+                },
+                error: function (response) {
+                    alert("error: GetListLayMauTestNhanh" + response.responseText);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#tblDanhSachLayMau').DataTable();
+
+            $("#btnXemDanhSachChuaLayMau").click(function () {
+                GetListChiDinhChuaLayMau();
+            });
+        });
+    </script>
+}

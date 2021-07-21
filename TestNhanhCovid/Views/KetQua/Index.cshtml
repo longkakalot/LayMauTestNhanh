@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewData["Title"] = "Kết quả";
+}
+
+<div class="card">
+    <div class="card-header bg-info" style="padding-bottom: 0px; padding-top: 5px">
+        <h5 class="card-title text-white">
+            Danh sách bệnh nhân có kết quả Xét nghiệm Test nhanh
+        </h5>
+    </div>
+
+    <div class="card-body">
+        <!-- tab -->
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a href="#tab1" data-toggle="tab" class="nav-link active">Chưa in kết quả</a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#tab2" data-toggle="tab" class="nav-link">Đã in kết quả</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="tab-pane container-fluid active" id="tab1">
+                <div id="divDanhSachKqChuaIn"></div>
+            </div>
+
+            <div class="tab-pane container-fluid" id="tab2">
+                <div id="divDanhSachKqDaIn"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>           
+
+        function GetListCoKqChuaIn() {
+                $.ajax({
+                    type: "GET",
+                    url: "/KetQua/GetListCoKqChuaIn",
+                    //data: JSON.stringify(objArr),
+                    //data: { 'noiDung': noiDung },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    success: function (responses) {
+                        if (responses === 0 || responses === "0") {
+                            swal.fire("Không lấy được thông tin");
+                        } else {
+                            $("#divDanhSachKqChuaIn").html(responses);
+                        }
+                    },
+                    failure: function (response) {
+                        alert("failure: GetListCoKqChuaIn KetQua" + response.responseText);
+                    },
+                    error: function (response) {
+                        alert("error: GetListCoKqChuaIn KetQua" + response.responseText);
+                    }
+                });
+        }
+
+        function GetListCoKqDaIn() {
+            $.ajax({
+                type: "GET",
+                url: "/KetQua/GetListCoKqDaIn",
+                //data: JSON.stringify(objArr),
+                //data: { 'noiDung': noiDung },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (responses) {
+                    if (responses === 0 || responses === "0") {
+                        swal.fire("Không lấy được thông tin");
+                    } else {
+                        $("#divDanhSachKqDaIn").html(responses);
+                    }
+                },
+                failure: function (response) {
+                    alert("failure: GetListCoKqDaIn KetQua" + response.responseText);
+                },
+                error: function (response) {
+                    alert("error: GetListCoKqDaIn KetQua" + response.responseText);
+                }
+            });
+        }
+
+        function GetListDaNhapLis() {
+            $.ajax({
+                type: "GET",
+                url: "/KetQua/GetListDaNhapLis",
+                //data: JSON.stringify(objArr),
+                //data: { 'noiDung': noiDung },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (responses) {
+                    if (responses === 0 || responses === "0") {
+                        swal.fire("Không lấy được thông tin");
+                    } else {
+                        $("#divDanhSachDaNhapLis").html(responses);
+                    }
+                },
+                failure: function (response) {
+                    alert("failure: GetListDaNhapLis" + response.responseText);
+                },
+                error: function (response) {
+                    alert("error: GetListDaNhapLis" + response.responseText);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //setTimeout(function () {
+            //    window.location.reload();
+                
+            //}, 10000);
+
+            GetListCoKqChuaIn();
+            GetListCoKqDaIn();
+        });
+    </script>
+}
+

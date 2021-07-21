@@ -1,0 +1,196 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="card">
+    <div class="card-header bg-info" style="padding-bottom: 0px; padding-top: 5px">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                <h5 class="card-title text-white">
+                    Danh sách bệnh nhân lấy mẫu Xét nghiệm Test nhanh
+                </h5>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                <div class="float-right form-group">
+                    <select id="slNguoiKetQua" class="form-control">
+                        <option value="0">Chọn người trả kết quả</option>
+
+                        <option value="2990">Nguyễn Diễm Châu</option>
+                        <option value="2883">Trương Thanh Phong</option>
+                        <option value="2881">Nguyễn Văn Nhã</option>
+                        <option value="2879">Trần Văn Bình</option>
+                        <option value="2736">Nguyễn Thúy Nga</option>
+                        <option value="3293">Nguyễn Minh Thanh Phong</option>
+                        <option value="3294">Hồ Thị Tường Vy</option>
+                        <option value="3295">Đặng Thị Quỳnh Trâm</option>
+
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+
+        </div>
+
+        
+    </div>
+
+    <div class="card-body">
+        <!-- tab -->
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a href="#tab1" data-toggle="tab" class="nav-link active">Chưa lấy mẫu</a>
+            </li>
+
+            @*<li class="nav-item">
+                    <a href="#tab2" data-toggle="tab" class="nav-link">Đã lấy mẫu</a>
+                </li>*@
+
+            <li class="nav-item">
+                <a href="#tab3" data-toggle="tab" class="nav-link ">Chưa kết quả</a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#tab4" data-toggle="tab" class="nav-link">Đã có kết quả</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="tab-pane container-fluid active" id="tab1">
+                <div id="divDanhSachChuaLayMau"></div>
+            </div>
+
+            @*<div class="tab-pane container-fluid" id="tab2">
+                    <div id="divDanhSachDaLayMau"></div>
+                </div>*@
+
+            <div class="tab-pane container-fluid" id="tab3">
+                <div id="divDanhSachLayMauChuaKq"></div>
+            </div>
+
+            <div class="tab-pane container-fluid" id="tab4">
+                <div id="divDanhSachLayMauCoKq"></div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+    
+
+    @section Scripts{
+        <script>
+            function GetListChiDinhChuaLayMau() {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/GetListChiDinhChuaLayMau",
+                    //data: JSON.stringify(objArr),
+                    //data: { 'noiDung': noiDung },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    success: function (responses) {
+                        if (responses === 0 || responses === "0") {
+                            swal.fire("Không lấy được thông tin");
+                        } else {
+                            $("#divDanhSachChuaLayMau").html(responses);
+                        }
+                    },
+                    failure: function (response) {
+                        alert("failure: GetListChiDinhChuaLayMau" + response.responseText);
+                    },
+                    error: function (response) {
+                        alert("error: GetListChiDinhChuaLayMau" + response.responseText);
+                    }
+                });
+            }
+
+            function GetListChiDinhDaLayMau() {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/GetListChiDinhDaLayMau",
+                    //data: JSON.stringify(objArr),
+                    //data: { 'noiDung': noiDung },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    success: function (responses) {
+                        if (responses === 0 || responses === "0") {
+                            swal.fire("Không lấy được thông tin");
+                        } else {
+                            $("#divDanhSachDaLayMau").html(responses);
+                        }
+                    },
+                    failure: function (response) {
+                        alert("failure: GetListChiDinhDaLayMau" + response.responseText);
+                    },
+                    error: function (response) {
+                        alert("error: GetListChiDinhDaLayMau" + response.responseText);
+                    }
+                });
+            }
+
+
+
+            function GetListDaLayMauChuaKq() {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/GetListDaLayMauChuaKq",
+                    //data: JSON.stringify(objArr),
+                    //data: { 'noiDung': noiDung },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    success: function (responses) {
+                        if (responses === 0 || responses === "0") {
+                            swal.fire("Không lấy được thông tin");
+                        } else {
+                            $("#divDanhSachLayMauChuaKq").html(responses);
+                        }
+                    },
+                    failure: function (response) {
+                        alert("failure: GetListDaLayMauChuaKq Home" + response.responseText);
+                    },
+                    error: function (response) {
+                        alert("error: GetListDaLayMauChuaKq Home" + response.responseText);
+                    }
+                });
+            }
+
+            function GetListDaLayMauCoKq() {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/GetListDaLayMauCoKq",
+                    //data: JSON.stringify(objArr),
+                    //data: { 'noiDung': noiDung },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    success: function (responses) {
+                        if (responses === 0 || responses === "0") {
+                            swal.fire("Không lấy được thông tin");
+                        } else {
+                            $("#divDanhSachLayMauCoKq").html(responses);
+                        }
+                    },
+                    failure: function (response) {
+                        alert("failure: GetListDaLayMauCoKq Home" + response.responseText);
+                    },
+                    error: function (response) {
+                        alert("error: GetListDaLayMauCoKq Home" + response.responseText);
+                    }
+                });
+            }
+
+            $(document).ready(function () {
+                GetListChiDinhChuaLayMau();
+                //GetListChiDinhDaLayMau();
+                GetListDaLayMauChuaKq();
+                GetListDaLayMauCoKq();
+            });
+        </script>
+    }

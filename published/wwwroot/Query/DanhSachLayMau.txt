@@ -1,0 +1,19 @@
+﻿select  STT = ROW_NUMBER() over (order by chitiet.TenBenhNhan),*
+	from (
+	select distinct
+		bn.TenBenhNhan		
+		,GioiTinh  =  case when bn.GioiTinh = 'T' then N'M' else N'F' end		
+		,NamSinh = bn.NamSinh
+		,DoiTuong = dt.TenDoiTuong
+		,DichVu = dv.TenDichVu
+		,ThoiGian = yc.ThoiGianYeuCau	
+	from CLSYeuCau yc
+		left join CLSYeuCauChiTiet ct on ct.CLSYeuCau_Id = yc.CLSYeuCau_Id
+		left join DM_DichVu dv on dv.DichVu_Id = ct.DichVu_Id
+		left join TiepNhan tn on tn.TiepNhan_Id = yc.TiepNhan_Id
+		left join DM_DoiTuong dt on dt.DoiTuong_Id = tn.DoiTuong_Id
+		left join DM_BenhNhan bn on bn.BenhNhan_Id = yc.BenhNhan_Id		
+	where yc.ThoiGianYeuCau between '{0}' and '{1}'
+		and ct.DichVu_Id in (1410,1413)
+		--and tn.CodePCR is not null
+	) chitiet
