@@ -77,7 +77,7 @@ namespace TestNhanhCovid.Controllers
             }
         }
 
-        public async Task<IActionResult> Insert(int Id, int codeXn, string NguoiLayMau)
+        public async Task<IActionResult> Insert(int Id, int YeuCauChiTiet_Id, int codeXn, string NguoiLayMau)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace TestNhanhCovid.Controllers
 
                 var thoiGian = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");               
 
-                var resultAwait = await _iLayMauTestNhanhRepo.Insert(Id, NguoiLayMau, codeXnMax.ToString(), thoiGian);
+                var resultAwait = await _iLayMauTestNhanhRepo.Insert(Id, YeuCauChiTiet_Id, NguoiLayMau, codeXnMax.ToString(), thoiGian);
                 var result = resultAwait;
 
                 return Content(result.ToString());

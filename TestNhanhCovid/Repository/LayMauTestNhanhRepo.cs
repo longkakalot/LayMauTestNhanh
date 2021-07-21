@@ -42,6 +42,7 @@ namespace TestNhanhCovid.Repository
 		,DichVu = dv.TenDichVu
 		,ThoiGian = yc.ThoiGianYeuCau	
         ,Id = yc.CLSYeuCau_Id
+        ,ct.YeuCauChiTiet_Id
         ,NguoiLayMau = nv.TenNhanVien
 		,ThanhToan = case when hd.HoaDon_Id is not null and hd.HuyHoaDon = 0 and hd.HoanTra = 0 then 0 else 1 end
         
@@ -61,6 +62,8 @@ namespace TestNhanhCovid.Repository
         and yc.TrangThai = 'ChuaKetQua'
 		and ct.TrangThai = 'ChuaThucHien'
         and yc.CLSYeuCau_Id not in (select IDRef from SoLanIn where IDRef = yc.CLSYeuCau_Id)
+		and ct.YeuCauChiTiet_Id not in (select YeuCauChiTiet_Id from SoLanIn where IDRef = yc.CLSYeuCau_Id)
+
 		--and tn.CodePCR is not null
 	) chitiet";
 
@@ -94,6 +97,7 @@ namespace TestNhanhCovid.Repository
 		,DichVu = dv.TenDichVu
 		,ThoiGian = sl.ThoiGian	
         ,Id = yc.CLSYeuCau_Id
+,ct.YeuCauChiTiet_Id
         ,KetQua = sl.KetQua
         --,CodeXn = sl.CodeXn
 		,ThanhToan = case when hd.HoaDon_Id is not null and hd.HuyHoaDon = 0 and hd.HoanTra = 0 then 0 else 1 end
@@ -110,6 +114,8 @@ left join HoaDonChiTiet hdct on hdct.YeuCauChiTiet_Id = ct.YeuCauChiTiet_Id
 	where yc.ThoiGianYeuCau between '{tuNgay}' and '{denNgay}'
 		and ct.DichVu_Id in (1410,1413)
         and yc.CLSYeuCau_Id in (select IDRef from SoLanIn where IDRef = yc.CLSYeuCau_Id)
+		and ct.YeuCauChiTiet_Id in (select YeuCauChiTiet_Id from SoLanIn where IDRef = yc.CLSYeuCau_Id)
+
         and sl.LayMau = 1
 	) chitiet";
 
@@ -211,13 +217,13 @@ left join HoaDonChiTiet hdct on hdct.YeuCauChiTiet_Id = ct.YeuCauChiTiet_Id
             }
         }
 
-        public async Task<int> Insert(int Id, string NguoiLayMau, string CodeXn, string ThoiGianLayMau)
+        public async Task<int> Insert(int Id, int YeuCauChiTiet_Id, string NguoiLayMau, string CodeXn, string ThoiGianLayMau)
         {
             try
             {
                 //var thoiGian1 = ThoiGian.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 
-                var sql = $@"INSERT INTO SoLanIn (IDRef, NguoiLayMau, LayMau, CodeXn, TgLayMau) values ({Id},N'{NguoiLayMau}', 1 , '{CodeXn}', '{ThoiGianLayMau}')";
+                var sql = $@"INSERT INTO SoLanIn (IDRef, YeuCauChiTiet_Id, NguoiLayMau, LayMau, CodeXn, TgLayMau) values ({Id}, {YeuCauChiTiet_Id}, N'{NguoiLayMau}', 1 , '{CodeXn}', '{ThoiGianLayMau}')";
 
                 var resultAwait = await _dapper.Insert<int>(sql, null, CommandType.Text);
                 var result = resultAwait;
@@ -268,6 +274,7 @@ left join HoaDonChiTiet hdct on hdct.YeuCauChiTiet_Id = ct.YeuCauChiTiet_Id
 		,DichVu = dv.TenDichVu
 		,ThoiGian = sl.Tglaymau	
         ,Id = yc.CLSYeuCau_Id
+,ct.YeuCauChiTiet_Id
         ,KetQua = sl.KetQua
         --,CodeXn = sl.CodeXn
 		,ThanhToan = case when hd.HoaDon_Id is not null and hd.HuyHoaDon = 0 and hd.HoanTra = 0 then 0 else 1 end
@@ -284,6 +291,8 @@ left join HoaDonChiTiet hdct on hdct.YeuCauChiTiet_Id = ct.YeuCauChiTiet_Id
 	where yc.ThoiGianYeuCau between '{tuNgay}' and '{denNgay}'
 		and ct.DichVu_Id in (1410,1413)
         and yc.CLSYeuCau_Id in (select IDRef from SoLanIn where IDRef = yc.CLSYeuCau_Id)
+		--and ct.YeuCauChiTiet_Id in (select YeuCauChiTiet_Id from SoLanIn where IDRef = yc.CLSYeuCau_Id)
+
         and sl.LayMau = 1 and sl.ketqua is null
 	) chitiet";
 
@@ -317,6 +326,7 @@ left join HoaDonChiTiet hdct on hdct.YeuCauChiTiet_Id = ct.YeuCauChiTiet_Id
 		,DichVu = dv.TenDichVu
 		,ThoiGian = sl.tgketqua	
         ,Id = yc.CLSYeuCau_Id
+,ct.YeuCauChiTiet_Id
         ,KetQua = sl.KetQua
         --,CodeXn = sl.CodeXn
 		,ThanhToan = case when hd.HoaDon_Id is not null and hd.HuyHoaDon = 0 and hd.HoanTra = 0 then 0 else 1 end
@@ -333,6 +343,8 @@ left join HoaDonChiTiet hdct on hdct.YeuCauChiTiet_Id = ct.YeuCauChiTiet_Id
 	where yc.ThoiGianYeuCau between '{tuNgay}' and '{denNgay}'
 		and ct.DichVu_Id in (1410,1413)
         and yc.CLSYeuCau_Id in (select IDRef from SoLanIn where IDRef = yc.CLSYeuCau_Id)
+		--and ct.YeuCauChiTiet_Id in (select YeuCauChiTiet_Id from SoLanIn where IDRef = yc.CLSYeuCau_Id)
+
         and sl.LayMau = 1
         and sl.ketqua is not null
 	) chitiet";
@@ -358,7 +370,7 @@ left join HoaDonChiTiet hdct on hdct.YeuCauChiTiet_Id = ct.YeuCauChiTiet_Id
                 var sql = 
                     $@"UPDATE SoLanIn 
 	                    SET KetQua = '{KetQua}', NguoiKetQua = N'{NguoiKetQua}', TgKetQua = '{ThoiGianKetQua}'
-	                    where idref = {Id} ";
+	                    where YeuCauChiTiet_Id = {Id} ";
 
                 var resultAwait = await _dapper.Update<int>(sql, null, CommandType.Text);
                 var result = resultAwait;

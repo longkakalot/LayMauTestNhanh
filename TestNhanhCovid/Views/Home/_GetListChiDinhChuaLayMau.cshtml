@@ -72,7 +72,7 @@
                     }                    
                 </td>
                 <td>
-                    <span class="btn btn-primary" onclick="LayMau(@item.Id, '@item.NguoiLayMau')">Lấy mẫu</span>
+                    <span class="btn btn-primary" onclick="LayMau(@item.Id, @item.YeuCauChiTiet_Id, '@item.NguoiLayMau')">Lấy mẫu</span>
                 </td>
             </tr>
         }
@@ -106,12 +106,12 @@
                 }
             });
         }
-        function LayMau(id, nguoilaymau) {
+        function LayMau(id, YeuCauChiTiet_Id, nguoilaymau) {
             $.ajax({
                 type: "GET",
                 url: "/Home/Insert",
                 //data: JSON.stringify(objArr),
-                data: { 'id': id, 'nguoilaymau': nguoilaymau },
+                data: { 'id': id, 'YeuCauChiTiet_Id': YeuCauChiTiet_Id, 'nguoilaymau': nguoilaymau },
                 //contentType: "application/json; charset=utf-8",
                 dataType: "text",
                 success: function (responses) {

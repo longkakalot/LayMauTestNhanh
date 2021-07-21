@@ -10,6 +10,7 @@ namespace TestNhanhCovid.Models
         //Lấy mẫu test nhanh tạm
         //Kết quả test nhanh tạm
         public int Id { get; set; }
+        public int YeuCauChiTiet_Id { get; set; }
         public string TenBenhNhan { get; set; }
         public string MaYTe { get; set; }
         public string SoDienThoai { get; set; }
