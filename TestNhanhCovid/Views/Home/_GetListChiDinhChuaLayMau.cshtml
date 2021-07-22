@@ -72,7 +72,8 @@
                     }                    
                 </td>
                 <td>
-                    <span class="btn btn-primary" onclick="LayMau(@item.Id, @item.YeuCauChiTiet_Id, '@item.NguoiLayMau')">Lấy mẫu</span>
+                    <span id="span_@item.Id" class="btn btn-primary" onclick="LayMau(@item.Id, @item.YeuCauChiTiet_Id, '@item.NguoiLayMau')">Lấy mẫu</span>
+                    
                 </td>
             </tr>
         }
@@ -107,6 +108,9 @@
             });
         }
         function LayMau(id, YeuCauChiTiet_Id, nguoilaymau) {
+            //disable onclick
+            $("#span_" + id).removeAttr("onclick");            
+            
             $.ajax({
                 type: "GET",
                 url: "/Home/Insert",
@@ -117,7 +121,7 @@
                 success: function (responses) {
                     if (responses === 1 || responses === "1") {
                         GetListChiDinhChuaLayMau();
-                        GetListChiDinhDaLayMau();
+                        //GetListChiDinhDaLayMau();
                     } else {
                         swal.fire("Thêm dữ liệu bị lỗi");
                     }
@@ -137,6 +141,9 @@
             $("#btnXemDanhSachChuaLayMau").click(function () {
                 GetListChiDinhChuaLayMau();
             });
+            //$("#span_" + id).click(function () {
+            //    alert(id);
+            //});
         });
     </script>
 }
