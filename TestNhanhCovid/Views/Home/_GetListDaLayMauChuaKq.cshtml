@@ -105,6 +105,7 @@
 
         function InsertKetQua(id, ketqua) {
             var userId = $("#slNguoiKetQua option:selected").val();
+            console.log(userId);
             if (userId === 0 || userId === "0") {
                 swal.fire("Chưa chọn người trả kết quả");
                 return false;
@@ -132,8 +133,7 @@
                         alert("error: GetListLayMauTestNhanh" + response.responseText);
                     }
                 });
-            }
-
+            }           
             
         }
 

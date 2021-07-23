@@ -83,30 +83,7 @@
 
 @{
     <script>
-        function InsertKetQua(id, ketqua) {            
-            $.ajax({
-                type: "GET",
-                url: "/Home/InsertKetQua",
-                //data: JSON.stringify(objArr),
-                data: { 'id': id, 'ketqua': ketqua },
-                //contentType: "application/json; charset=utf-8",
-                dataType: "text",
-                success: function (responses) {
-                    if (responses === 1 || responses === "1") {
-                        GetListLayMauTestNhanhChuaKetQua();
-                        //GetListLayMauTestNhanhCoKetQua();
-                    } else {
-                        swal.fire("Thêm dữ liệu bị lỗi");
-                    }
-                },
-                failure: function (response) {
-                    alert("failure: GetListLayMauTestNhanh" + response.responseText);
-                },
-                error: function (response) {
-                    alert("error: GetListLayMauTestNhanh" + response.responseText);
-                }
-            });
-        }
+        
         function LayMau(id, YeuCauChiTiet_Id, nguoilaymau) {
             //disable onclick
             $("#span_" + id).removeAttr("onclick");            
