@@ -120,6 +120,8 @@
                     dataType: "text",
                     success: function (responses) {
                         if (responses === 1 || responses === "1") {
+                            swal.fire("Cập nhật kết quả thành công");
+
                             GetListDaLayMauChuaKq();
                             GetListDaLayMauCoKq();
                         } else {

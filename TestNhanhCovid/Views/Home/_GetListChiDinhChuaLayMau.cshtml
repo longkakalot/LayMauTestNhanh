@@ -97,6 +97,7 @@
                 dataType: "text",
                 success: function (responses) {
                     if (responses === 1 || responses === "1") {
+                        swal.fire("Lấy mẫu thành công");
                         GetListChiDinhChuaLayMau();
                         //GetListChiDinhDaLayMau();
                     } else {
