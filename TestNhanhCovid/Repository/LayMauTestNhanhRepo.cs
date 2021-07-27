@@ -63,7 +63,7 @@ namespace TestNhanhCovid.Repository
 		and ct.TrangThai = 'ChuaThucHien'
         and yc.CLSYeuCau_Id not in (select IDRef from SoLanIn where IDRef = yc.CLSYeuCau_Id)
 		and ct.YeuCauChiTiet_Id not in (select YeuCauChiTiet_Id from SoLanIn where IDRef = yc.CLSYeuCau_Id)
-
+        and hd.HuyHoaDon is null and hd.HoanTra is null
 		--and tn.CodePCR is not null
 	) chitiet";
 
