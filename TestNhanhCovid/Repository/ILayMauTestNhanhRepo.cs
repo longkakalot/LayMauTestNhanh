@@ -18,8 +18,8 @@ namespace TestNhanhCovid.Repository
 
 
 
-        Task<IList<LayMauTestNhanh>> GetListCoKetQuaChuaNhapLis(string tuNgay, string denNgay);
-        Task<IList<LayMauTestNhanh>> GetListCoKetQuaDaNhapLis(string tuNgay, string denNgay);
+        //Task<IList<LayMauTestNhanh>> GetListCoKetQuaChuaNhapLis(string tuNgay, string denNgay);
+        //Task<IList<LayMauTestNhanh>> GetListCoKetQuaDaNhapLis(string tuNgay, string denNgay);
 
         Task<int> Insert(int Id, int YeuCauChiTiet_Id, string NguoiLayMau, string CodeXn, string ThoiGianLayMau);
 

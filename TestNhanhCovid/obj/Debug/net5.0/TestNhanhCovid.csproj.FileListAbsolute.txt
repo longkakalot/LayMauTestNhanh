@@ -135,3 +135,4 @@ G:\SourceCodeWebApp\XNTestNhanhCovid\TestNhanhCovid\TestNhanhCovid\obj\Debug\net
 G:\SourceCodeWebApp\XNTestNhanhCovid\TestNhanhCovid\TestNhanhCovid\obj\Debug\net5.0\Razor\Views\Home\_GetListDaLayMauCoKq.cshtml.g.cs
 G:\SourceCodeWebApp\XNTestNhanhCovid\TestNhanhCovid\TestNhanhCovid\obj\Debug\net5.0\Razor\Views\KetQua\_GetListCoKqChuaIn.cshtml.g.cs
 G:\SourceCodeWebApp\XNTestNhanhCovid\TestNhanhCovid\TestNhanhCovid\obj\Debug\net5.0\Razor\Views\KetQua\_GetListCoKqDaIn.cshtml.g.cs
+G:\SourceCodeWebApp\XNTestNhanhCovid\TestNhanhCovid\TestNhanhCovid\obj\Debug\net5.0\TestNhanhCovid.csproj.AssemblyReference.cache

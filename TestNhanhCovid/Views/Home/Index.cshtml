@@ -32,11 +32,30 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 ">
 
         </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 ">
+            <div class="float-right">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="0" id="ckTenCongTy">
+                    <label class="form-check-label" for="ckTenCongTy">
+                        Hợp đồng Công ty
+                    </label>
+                </div>
+            </div>
+        </div>
 
-        
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 ">
+            <div class="float-right">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="0" id="ckCongSo2">
+                    <label class="form-check-label" for="ckCongSo2">
+                        Cổng số 2
+                    </label>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="card-body">
@@ -61,14 +80,35 @@
     </div>
 
     <div class="card-body">
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                <div class="form-group">
+                    <div class="form-inline">
+                        <span>Từ ngày: </span>
+                        <input type="date" id="dtTuNgay" class="form-control ml-2" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                <div class="form-group">
+                    <div class="form-inline">
+                        <span>Đến ngày: </span>
+                        <input type="date" id="dtDenNgay" class="form-control ml-2" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    </div>
+                </div>
+            </div>            
+        </div>
+
+        <hr />
+
         <div class="tab-content">
             <div class="tab-pane container-fluid active" id="tab1">
                 <div id="divDanhSachChuaLayMau"></div>
             </div>
 
             @*<div class="tab-pane container-fluid" id="tab2">
-                    <div id="divDanhSachDaLayMau"></div>
-                </div>*@
+                <div id="divDanhSachDaLayMau"></div>
+            </div>*@
 
             <div class="tab-pane container-fluid" id="tab3">
                 <div id="divDanhSachLayMauChuaKq"></div>
@@ -88,12 +128,14 @@
 
     @section Scripts{
         <script>
-            function GetListChiDinhChuaLayMau() {
+            function GetListChiDinhChuaLayMau(tenCongTy, congSo2) {
+                var tuNgay = $("#dtTuNgay").val();
+                var denNgay = $("#dtDenNgay").val();
                 $.ajax({
                     type: "GET",
                     url: "/Home/GetListChiDinhChuaLayMau",
                     //data: JSON.stringify(objArr),
-                    //data: { 'noiDung': noiDung },
+                    data: { 'tenCongTy': tenCongTy, 'congSo2': congSo2, 'tuNgay': tuNgay, 'denNgay': denNgay },
                     //contentType: "application/json; charset=utf-8",
                     dataType: "text",
                     success: function (responses) {
@@ -138,12 +180,14 @@
 
 
 
-            function GetListDaLayMauChuaKq() {
+            function GetListDaLayMauChuaKq(tenCongTy, congSo2) {
+                var tuNgay = $("#dtTuNgay").val();
+                var denNgay = $("#dtDenNgay").val();
                 $.ajax({
                     type: "GET",
                     url: "/Home/GetListDaLayMauChuaKq",
                     //data: JSON.stringify(objArr),
-                    //data: { 'noiDung': noiDung },
+                    data: { 'tenCongTy': tenCongTy, 'congSo2': congSo2, 'tuNgay': tuNgay, 'denNgay': denNgay },
                     //contentType: "application/json; charset=utf-8",
                     dataType: "text",
                     success: function (responses) {
@@ -162,12 +206,14 @@
                 });
             }
 
-            function GetListDaLayMauCoKq() {
+            function GetListDaLayMauCoKq(tenCongTy, congSo2) {
+                var tuNgay = $("#dtTuNgay").val();
+                var denNgay = $("#dtDenNgay").val();
                 $.ajax({
                     type: "GET",
                     url: "/Home/GetListDaLayMauCoKq",
                     //data: JSON.stringify(objArr),
-                    //data: { 'noiDung': noiDung },
+                    data: { 'tenCongTy': tenCongTy, 'congSo2': congSo2, 'tuNgay': tuNgay, 'denNgay': denNgay },
                     //contentType: "application/json; charset=utf-8",
                     dataType: "text",
                     success: function (responses) {
@@ -187,10 +233,53 @@
             }
 
             $(document).ready(function () {
-                GetListChiDinhChuaLayMau();
+                
+                $("#ckTenCongTy").click(function () {
+                    var congSo2 = "";
+                    if ($("#ckCongSo2").is(":checked")) {
+                        congSo2 = "1";
+                    }
+                    else {
+                        congSo2 = "0";
+                    }
+
+                    if ($("#ckTenCongTy").is(":checked")) {
+                        GetListChiDinhChuaLayMau('1', congSo2);
+                        GetListDaLayMauChuaKq('1', congSo2);
+                        GetListDaLayMauCoKq('1', congSo2);
+                    } else {
+                        GetListChiDinhChuaLayMau('0', congSo2);
+                        GetListDaLayMauChuaKq('0', congSo2);
+                        GetListDaLayMauCoKq('0', congSo2);
+                    }
+                });
+
+                $("#ckCongSo2").click(function () {
+                    var tenCongTy = "";
+                    if ($("#ckTenCongTy").is(":checked")) {
+                        tenCongTy = "1";
+                    }
+                    else {
+                        tenCongTy = "0";
+                    }
+
+                    if ($("#ckCongSo2").is(":checked")) {
+                        GetListChiDinhChuaLayMau(tenCongTy, '1');
+                        GetListDaLayMauChuaKq(tenCongTy, '1');
+                        GetListDaLayMauCoKq(tenCongTy, '1');
+                    } else {
+                        GetListChiDinhChuaLayMau(tenCongTy, '0');
+                        GetListDaLayMauChuaKq(tenCongTy, '0');
+                        GetListDaLayMauCoKq(tenCongTy, '0');
+                    }
+                });
+
+                
+
+                GetListChiDinhChuaLayMau('0','0');
                 //GetListChiDinhDaLayMau();
-                GetListDaLayMauChuaKq();
-                GetListDaLayMauCoKq();
+                GetListDaLayMauChuaKq('0','0');
+                GetListDaLayMauCoKq('0','0');
             });
         </script>
     }

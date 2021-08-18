@@ -26,6 +26,8 @@ namespace TestNhanhCovid.Models
 
         public DateTime ThoiGianIn { get; set; }
         public int ThanhToan { get; set; }
+        public string TenCongTy { get; set; }
+        public string GhiChu { get; set; }
 
     }
 }

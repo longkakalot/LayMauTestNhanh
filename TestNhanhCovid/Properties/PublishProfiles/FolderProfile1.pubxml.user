@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>G:\SourceCodeWebApp\XNTestNhanhCovid\TestNhanhCovid\published3007</_PublishTargetUrl>
+    <History>True|2021-08-11T08:30:09.6219838Z;True|2021-08-07T16:49:59.6170683+07:00;True|2021-08-06T09:00:13.3160592+07:00;True|2021-08-05T17:01:23.0881179+07:00;True|2021-08-02T10:51:16.1675860+07:00;True|2021-07-31T23:51:44.1392671+07:00;True|2021-07-30T11:36:37.5857896+07:00;True|2021-07-30T10:02:05.0615889+07:00;</History>
+  </PropertyGroup>
+</Project>

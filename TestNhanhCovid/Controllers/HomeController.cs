@@ -38,12 +38,12 @@ namespace TestNhanhCovid.Controllers
         }
 
         #region Lấy mẫu
-        public async Task<IActionResult> GetListChiDinhChuaLayMau()
+        public async Task<IActionResult> GetListChiDinhChuaLayMau(string tenCongTy, string congSo2, DateTime tuNgay, DateTime denNgay)
         {
             try
             {
-                var tuNgay = DateTime.Now.ToString("yyyyMMdd");
-                var denNgay = DateTime.Now.AddDays(1).ToString("yyyyMMdd");
+                var tuNgay1 = tuNgay.ToString("yyyyMMdd");
+                var denNgay1 = denNgay.AddDays(1).ToString("yyyyMMdd");
 
                 var codeXN = await GetCodeXnMax();
                 int codeXnMax = 0;
@@ -63,12 +63,58 @@ namespace TestNhanhCovid.Controllers
 
 
 
-                var resultAwait = await _iLayMauTestNhanhRepo.GetListChuaLayMau(tuNgay, denNgay);
-                var result = resultAwait.ToList();
+                var resultAwait = await _iLayMauTestNhanhRepo.GetListChuaLayMau(tuNgay1, denNgay1);
+                
+                if(tenCongTy == "0" && congSo2 == "0") //ds không có hợp đồng, ko có số 2
+                {
+                    var result = resultAwait
+                    .Where(m => m.GhiChu is null || m.GhiChu.ToLower().Contains("nn") 
+                    || m.GhiChu == "3" || m.GhiChu == "4" || m.GhiChu == "5")
+                    .ToList();
 
-                ViewBag.CodeXn = codeXnMax;
+                    ViewBag.CodeXn = codeXnMax;
 
-                return PartialView("_GetListChiDinhChuaLayMau", result);
+                    return PartialView("_GetListChiDinhChuaLayMau", result);
+                }
+                else if(tenCongTy == "1" && congSo2 == "0") // có cty, ko có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower() == "ck")
+                        .OrderBy(m=>m.TenCongTy)
+                        .ToList();
+
+                    ViewBag.CodeXn = codeXnMax;
+
+                    return PartialView("_GetListChiDinhChuaLayMau", result);
+                }
+                else if (tenCongTy == "0" && congSo2 == "1") // ko có cty, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2"))
+                        .ToList();
+
+                    ViewBag.CodeXn = codeXnMax;
+
+                    return PartialView("_GetListChiDinhChuaLayMau", result);
+                }
+
+                else
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower() == "ck")
+                        .OrderBy(m => m.TenCongTy)
+                        .ToList();
+
+                    ViewBag.CodeXn = codeXnMax;
+
+                    return PartialView("_GetListChiDinhChuaLayMau", result);
+                }
             }
             catch (Exception ex)
             {
@@ -98,7 +144,7 @@ namespace TestNhanhCovid.Controllers
                 }               
                 
 
-                var thoiGian = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");               
+                var thoiGian = DateTime.Now.AddMinutes(-15).ToString("yyyy-MM-dd HH:mm:ss.fff");               
 
                 var resultAwait = await _iLayMauTestNhanhRepo.Insert(Id, YeuCauChiTiet_Id, NguoiLayMau, codeXnMax.ToString(), thoiGian);
                 var result = resultAwait;
@@ -150,18 +196,85 @@ namespace TestNhanhCovid.Controllers
 
 
         #region Kết quả
-        public async Task<IActionResult> GetListDaLayMauChuaKq()
+        public async Task<IActionResult> GetListDaLayMauChuaKq(string tenCongTy, string congSo2, DateTime tuNgay, DateTime denNgay)
         {
             try
             {
-                var tuNgay = DateTime.Now.ToString("yyyyMMdd");
-                var denNgay = DateTime.Now.AddDays(1).ToString("yyyyMMdd");
+                var tuNgay1 = tuNgay.ToString("yyyyMMdd");
+                var denNgay1 = denNgay.AddDays(1).ToString("yyyyMMdd");
 
 
-                var resultAwait = await _iLayMauTestNhanhRepo.GetListChuaKetQua(tuNgay, denNgay);
-                var result = resultAwait.ToList();
+                var resultAwait = await _iLayMauTestNhanhRepo.GetListChuaKetQua(tuNgay1, denNgay1);
 
-                return PartialView("_GetListDaLayMauChuaKq", result);
+                if (tenCongTy == "0" && congSo2 == "0") //ds không có hợp đồng, ko có số 2
+                {
+                    var result = resultAwait
+                    .Where(m => m.GhiChu is null || m.GhiChu.ToLower().Contains("nn") || m.GhiChu == "3" || m.GhiChu == "4" || m.GhiChu == "5")
+                    .ToList();                    
+
+                    return PartialView("_GetListDaLayMauChuaKq", result);
+                }
+                else if (tenCongTy == "1" && congSo2 == "0") // có cty, ko có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower() == "ck")
+                        .OrderBy(m => m.TenCongTy)
+                        .ToList();                    
+
+                    return PartialView("_GetListDaLayMauChuaKq", result);
+                }
+                else if (tenCongTy == "0" && congSo2 == "1") // ko có cty, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2"))
+                        .ToList();
+
+                    return PartialView("_GetListDaLayMauChuaKq", result);
+                }
+
+                else
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower() == "ck")
+                        .OrderBy(m => m.TenCongTy)
+                        .ToList();                   
+
+                    return PartialView("_GetListDaLayMauChuaKq", result);
+                }
+
+
+
+
+
+
+
+                //if (tenCongTy == "0") //ds không có hợp đồng
+                //{
+                //    var result = resultAwait
+                //        .Where(m => m.GhiChu is null)
+                //        .ToList();                    
+
+                //    return PartialView("_GetListDaLayMauChuaKq", result);
+                //}
+                //else
+                //{
+                //    var result = resultAwait
+                //        .Where(m => m.TenCongTy is not null && m.GhiChu is not null)
+                //        .ToList();                    
+
+                //    return PartialView("_GetListDaLayMauChuaKq", result);
+                //}
+
+
+                //var result = resultAwait.ToList();
+
+                //return PartialView("_GetListDaLayMauChuaKq", result);
             }
             catch (Exception ex)
             {
@@ -170,18 +283,79 @@ namespace TestNhanhCovid.Controllers
             }
         }
 
-        public async Task<IActionResult> GetListDaLayMauCoKq()
+        public async Task<IActionResult> GetListDaLayMauCoKq(string tenCongTy, string congSo2, DateTime tuNgay, DateTime denNgay)
         {
             try
             {
-                var tuNgay = DateTime.Now.ToString("yyyyMMdd");
-                var denNgay = DateTime.Now.AddDays(1).ToString("yyyyMMdd");
+                var tuNgay1 = tuNgay.ToString("yyyyMMdd");
+                var denNgay1 = denNgay.AddDays(1).ToString("yyyyMMdd");
 
 
-                var resultAwait = await _iLayMauTestNhanhRepo.GetListDaKetQua(tuNgay, denNgay);
-                var result = resultAwait.ToList();
+                var resultAwait = await _iLayMauTestNhanhRepo.GetListDaKetQua(tuNgay1, denNgay1);
 
-                return PartialView("_GetListDaLayMauCoKq", result);
+                if (tenCongTy == "0" && congSo2 == "0") //ds không có hợp đồng, ko có số 2
+                {
+                    var result = resultAwait
+                    .Where(m => m.GhiChu is null || m.GhiChu.ToLower().Contains("nn") || m.GhiChu == "3" || m.GhiChu == "4" || m.GhiChu == "5")
+                    .ToList();
+
+                    return PartialView("_GetListDaLayMauCoKq", result);
+                }
+                else if (tenCongTy == "1" && congSo2 == "0") // có cty, ko có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower() == "ck")
+                        .OrderBy(m => m.TenCongTy)
+                        .ToList();
+
+                    return PartialView("_GetListDaLayMauCoKq", result);
+                }
+                else if (tenCongTy == "0" && congSo2 == "1") // ko có cty, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2"))
+                        .ToList();
+
+                    return PartialView("_GetListDaLayMauCoKq", result);
+                }
+
+                else
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower() == "ck")
+                        .OrderBy(m => m.TenCongTy)
+                        .ToList();
+
+                    return PartialView("_GetListDaLayMauCoKq", result);
+                }
+
+                //if (tenCongTy == "0") //ds không có hợp đồng
+                //{
+                //    var result = resultAwait
+                //        .Where(m => m.GhiChu is null)
+                //        .ToList();
+
+                //    return PartialView("_GetListDaLayMauCoKq", result);
+                //}
+                //else
+                //{
+                //    var result = resultAwait
+                //        .Where(m => m.TenCongTy is not null && m.GhiChu is not null)
+                //        .ToList();
+
+                //    return PartialView("_GetListDaLayMauCoKq", result);
+                //}
+
+
+                //var result = resultAwait.ToList();
+
+                //return PartialView("_GetListDaLayMauCoKq", result);
             }
             catch (Exception ex)
             {
