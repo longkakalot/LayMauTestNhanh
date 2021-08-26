@@ -92,21 +92,25 @@
                             {
                                 <span>Cổng số 2</span>
                             }
-                            else if (item.GhiChu == "3")
+                            else if (item.GhiChu.Contains("3"))
                             {
                                 <span>Cổng số 3</span>
                             }
-                            else if (item.GhiChu == "4")
+                            else if (item.GhiChu.Contains("4"))
                             {
                                 <span>Cổng số 4</span>
                             }
-                            else if (item.GhiChu == "5")
+                            else if (item.GhiChu.Contains("5"))
                             {
                                 <span>Cổng số 5</span>
                             }
-                            else if (item.GhiChu.ToLower() == "ck")
+                            else if (item.GhiChu.ToLower().Contains("ck"))
                             {
                                 <span>Hợp đồng công ty</span>
+                            }
+                            else if (item.GhiChu.ToLower().Contains("nn"))
+                            {
+                                <span>Nhân viên</span>
                             }
                             else
                             {
