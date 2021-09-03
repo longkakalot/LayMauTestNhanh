@@ -105,7 +105,7 @@
                 {
                     <span>Hợp đồng công ty</span>
                 }
-                else if (item.GhiChu.ToLower().Contains("nn"))
+                else if (item.GhiChu.ToLower().Contains("nv"))
                 {
                     <span>Nhân viên</span>
                 }
@@ -156,19 +156,19 @@
             $('#tblDanhSachCoKetQua').DataTable();
 
             $("#btnXemDanhSachDaCoKetQua").click(function () {
-                if ($("#ckTenCongTy").is(":checked") && $("#ckCongSo2").is(":checked")) {
-                    GetListDaLayMauCoKq('1', '1');
-                }
-                else if ($("#ckTenCongTy").is(":checked") && !$("#ckCongSo2").is(":checked")) {
-                    GetListDaLayMauCoKq('1', '0');
-                }
-                else if (!$("#ckTenCongTy").is(":checked") && $("#ckCongSo2").is(":checked")) {
-                    GetListDaLayMauCoKq('0', '1');
-                }
-                else {
-                    GetListDaLayMauCoKq('0', '0');
-                }
-
+                //if ($("#ckTenCongTy").is(":checked") && $("#ckCongSo2").is(":checked")) {
+                //    GetListDaLayMauCoKq('1', '1');
+                //}
+                //else if ($("#ckTenCongTy").is(":checked") && !$("#ckCongSo2").is(":checked")) {
+                //    GetListDaLayMauCoKq('1', '0');
+                //}
+                //else if (!$("#ckTenCongTy").is(":checked") && $("#ckCongSo2").is(":checked")) {
+                //    GetListDaLayMauCoKq('0', '1');
+                //}
+                //else {
+                //    GetListDaLayMauCoKq('0', '0');
+                //}
+                KiemTraCheckBox();
 
                 //if ($("#ckTenCongTy").is(":checked")) {
                 //    GetListDaLayMauCoKq('1');

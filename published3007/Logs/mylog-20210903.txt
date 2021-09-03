@@ -1,0 +1,4 @@
+2021-09-03T08:49:17.1478389+07:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2021-09-03T08:49:17.1541647+07:00  [INF] Hosting environment: "Production" (c3307c92)
+2021-09-03T08:49:17.1542671+07:00  [INF] Content root path: "G:\SourceCodeWebApp\XNTestNhanhCovid\TestNhanhCovid\published3007" (b5d60022)
+2021-09-03T08:49:29.8201508+07:00  [INF] Application is shutting down... (90f52c38)

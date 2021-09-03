@@ -108,7 +108,7 @@
                             {
                                 <span>Hợp đồng công ty</span>
                             }
-                            else if (item.GhiChu.ToLower().Contains("nn"))
+                            else if (item.GhiChu.ToLower().Contains("nv"))
                             {
                                 <span>Nhân viên</span>
                             }
@@ -152,6 +152,13 @@
             } else {
                 congSo2 = '0'
             }
+            var nhanVien = "";
+            if ($("#ckNhanVien").is(":checked")) {
+                nhanVien = "1";
+            }
+            else {
+                nhanVien = "0";
+            }
 
             $.ajax({
                 type: "GET",
@@ -163,7 +170,7 @@
                 success: function (responses) {
                     if (responses === 1 || responses === "1") {
                         swal.fire("Lấy mẫu thành công");
-                        GetListChiDinhChuaLayMau(congTy, congSo2);
+                        GetListChiDinhChuaLayMau(congTy, congSo2, nhanVien);
                         //GetListChiDinhDaLayMau();
                     } else {
                         swal.fire("Thêm dữ liệu bị lỗi");
@@ -182,18 +189,19 @@
             $('#tblDanhSachLayMau').DataTable();
 
             $("#btnXemDanhSachChuaLayMau").click(function () {
-                if ($("#ckTenCongTy").is(":checked") && $("#ckCongSo2").is(":checked")) {
-                    GetListChiDinhChuaLayMau('1','1');
-                }
-                else if ($("#ckTenCongTy").is(":checked") && !$("#ckCongSo2").is(":checked")) {
-                    GetListChiDinhChuaLayMau('1', '0');
-                }
-                else if (!$("#ckTenCongTy").is(":checked") && $("#ckCongSo2").is(":checked")) {
-                    GetListChiDinhChuaLayMau('0', '1');
-                }
-                else {
-                    GetListChiDinhChuaLayMau('0','0');
-                }
+                //if ($("#ckTenCongTy").is(":checked") && $("#ckCongSo2").is(":checked")) {
+                //    GetListChiDinhChuaLayMau('1','1');
+                //}
+                //else if ($("#ckTenCongTy").is(":checked") && !$("#ckCongSo2").is(":checked")) {
+                //    GetListChiDinhChuaLayMau('1', '0');
+                //}
+                //else if (!$("#ckTenCongTy").is(":checked") && $("#ckCongSo2").is(":checked")) {
+                //    GetListChiDinhChuaLayMau('0', '1');
+                //}
+                //else {
+                //    GetListChiDinhChuaLayMau('0','0');
+                //}
+                KiemTraCheckBox();
             });
             //$("#span_" + id).click(function () {
             //    alert(id);

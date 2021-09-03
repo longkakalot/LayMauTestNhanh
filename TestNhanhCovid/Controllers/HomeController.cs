@@ -38,7 +38,7 @@ namespace TestNhanhCovid.Controllers
         }
 
         #region Lấy mẫu
-        public async Task<IActionResult> GetListChiDinhChuaLayMau(string tenCongTy, string congSo2, DateTime tuNgay, DateTime denNgay)
+        public async Task<IActionResult> GetListChiDinhChuaLayMau(string tenCongTy, string congSo2, string nhanVien, DateTime tuNgay, DateTime denNgay)
         {
             try
             {
@@ -64,11 +64,10 @@ namespace TestNhanhCovid.Controllers
 
                 var resultAwait = await _iLayMauTestNhanhRepo.GetListChuaLayMau(tuNgay1, denNgay1);
                 
-                if(tenCongTy == "0" && congSo2 == "0") //ds không có hợp đồng, ko có số 2
+                if(tenCongTy == "0" && congSo2 == "0" && nhanVien == "0") //ds không có hợp đồng, ko có số 2, ko có nhân viên
                 {
                     var result = resultAwait
-                    .Where(m => m.GhiChu is null || m.GhiChu.ToLower().Contains("nn")
-                    || m.GhiChu.ToLower().Contains("nv")
+                    .Where(m => m.GhiChu is null || m.GhiChu.ToLower().Contains("nn")                    
                     || m.GhiChu == "3" || m.GhiChu == "4" || m.GhiChu == "5")
                     .ToList();
 
@@ -76,12 +75,12 @@ namespace TestNhanhCovid.Controllers
 
                     return PartialView("_GetListChiDinhChuaLayMau", result);
                 }
-                else if(tenCongTy == "1" && congSo2 == "0") // có cty, ko có cổng 2
+                else if(tenCongTy == "1" && congSo2 == "0" && nhanVien == "0") // có cty, ko có cổng 2, ko nhan vien
                 {
                     var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
                     var result = result1
-                        .Where(m => m.GhiChu.ToLower() == "ck")
+                        .Where(m => m.GhiChu.ToLower().Contains("ck"))
                         .OrderBy(m=>m.TenCongTy)
                         .ToList();
 
@@ -89,12 +88,61 @@ namespace TestNhanhCovid.Controllers
 
                     return PartialView("_GetListChiDinhChuaLayMau", result);
                 }
-                else if (tenCongTy == "0" && congSo2 == "1") // ko có cty, có cổng 2
+                else if (tenCongTy == "1" && congSo2 == "0" && nhanVien == "1") // có cty, ko có cổng 2, co nhan vien
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("ck") || m.GhiChu.ToLower().Contains("nv"))
+                        .OrderBy(m => m.TenCongTy)
+                        .ToList();
+
+                    ViewBag.CodeXn = codeXnMax;
+
+                    return PartialView("_GetListChiDinhChuaLayMau", result);
+                }
+                else if (tenCongTy == "0"  && congSo2 == "1" && nhanVien == "0") // ko có cty, ko nhan vien, có cổng 2
                 {
                     var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
                     var result = result1
                         .Where(m => m.GhiChu.ToLower().Contains("2"))
+                        .ToList();
+
+                    ViewBag.CodeXn = codeXnMax;
+
+                    return PartialView("_GetListChiDinhChuaLayMau", result);
+                }
+                else if (tenCongTy == "0"  && congSo2 == "1" && nhanVien == "1") // ko có cty, có nhan vien, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower().Contains("nv"))
+                        .ToList();
+
+                    ViewBag.CodeXn = codeXnMax;
+
+                    return PartialView("_GetListChiDinhChuaLayMau", result);
+                }
+                else if (tenCongTy == "0" && congSo2 == "0" && nhanVien == "1") // ko có cty, có nhan vien, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("nv"))
+                        .ToList();
+
+                    ViewBag.CodeXn = codeXnMax;
+
+                    return PartialView("_GetListChiDinhChuaLayMau", result);
+                }
+                else if (tenCongTy == "1" && congSo2 == "1" && nhanVien == "0") // có cty, ko có nhan vien, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower().Contains("ck"))
                         .ToList();
 
                     ViewBag.CodeXn = codeXnMax;
@@ -107,7 +155,7 @@ namespace TestNhanhCovid.Controllers
                     var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
                     var result = result1
-                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower() == "ck")
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower().Contains("ck") || m.GhiChu.ToLower().Contains("nv"))
                         .OrderBy(m => m.TenCongTy)
                         .ToList();
 
@@ -196,7 +244,7 @@ namespace TestNhanhCovid.Controllers
 
 
         #region Kết quả
-        public async Task<IActionResult> GetListDaLayMauChuaKq(string tenCongTy, string congSo2, DateTime tuNgay, DateTime denNgay)
+        public async Task<IActionResult> GetListDaLayMauChuaKq(string tenCongTy, string congSo2, string nhanVien, DateTime tuNgay, DateTime denNgay)
         {
             try
             {
@@ -205,52 +253,90 @@ namespace TestNhanhCovid.Controllers
 
 
                 var resultAwait = await _iLayMauTestNhanhRepo.GetListChuaKetQua(tuNgay1, denNgay1);
-
-                if (tenCongTy == "0" && congSo2 == "0") //ds không có hợp đồng, ko có số 2
+                
+                if (tenCongTy == "0" && congSo2 == "0" && nhanVien == "0") //ds không có hợp đồng, ko có số 2, ko có nhân viên
                 {
                     var result = resultAwait
-                    .Where(m => m.GhiChu is null || m.GhiChu.ToLower().Contains("nn")
-                    || m.GhiChu.ToLower().Contains("nv")
+                    .Where(m => m.GhiChu is null || m.GhiChu.ToLower().Contains("nn")                    
                     || m.GhiChu == "3" || m.GhiChu == "4" || m.GhiChu == "5")
-                    .ToList();                    
+                    .ToList();                                        
 
                     return PartialView("_GetListDaLayMauChuaKq", result);
                 }
-                else if (tenCongTy == "1" && congSo2 == "0") // có cty, ko có cổng 2
+                else if (tenCongTy == "1" && congSo2 == "0" && nhanVien == "0") // có cty, ko có cổng 2, ko nhan vien
                 {
                     var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
                     var result = result1
-                        .Where(m => m.GhiChu.ToLower() == "ck")
+                        .Where(m => m.GhiChu.ToLower().Contains("ck"))
                         .OrderBy(m => m.TenCongTy)
-                        .ToList();                    
+                        .ToList();                   
 
                     return PartialView("_GetListDaLayMauChuaKq", result);
                 }
-                else if (tenCongTy == "0" && congSo2 == "1") // ko có cty, có cổng 2
+                else if (tenCongTy == "1" && congSo2 == "0" && nhanVien == "1") // có cty, ko có cổng 2, co nhan vien
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("ck") || m.GhiChu.ToLower().Contains("nv"))
+                        .OrderBy(m => m.TenCongTy)
+                        .ToList();
+                   
+                    return PartialView("_GetListDaLayMauChuaKq", result);
+                }
+                else if (tenCongTy == "0" && nhanVien == "0" && congSo2 == "1") // ko có cty, ko nhan vien, có cổng 2
                 {
                     var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
                     var result = result1
                         .Where(m => m.GhiChu.ToLower().Contains("2"))
                         .ToList();
+                    
+                    return PartialView("_GetListDaLayMauChuaKq", result);
+                }
+                else if (tenCongTy == "0" && nhanVien == "1" && congSo2 == "1") // ko có cty, có nhan vien, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower().Contains("nv"))
+                        .ToList();
+                    
+                    return PartialView("_GetListDaLayMauChuaKq", result);
+                }
+                else if (tenCongTy == "0" && congSo2 == "0" && nhanVien == "1") // ko có cty, có nhan vien, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("nv"))
+                        .ToList();                    
 
                     return PartialView("_GetListDaLayMauChuaKq", result);
                 }
+                else if (tenCongTy == "1" && congSo2 == "1" && nhanVien == "0") // có cty, ko có nhan vien, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower().Contains("ck"))
+                        .ToList();                    
+
+                    return PartialView("_GetListDaLayMauChuaKq", result);
+                }
                 else
                 {
                     var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
                     var result = result1
-                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower() == "ck")
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower().Contains("ck") || m.GhiChu.ToLower().Contains("nv"))
                         .OrderBy(m => m.TenCongTy)
-                        .ToList();                   
+                        .ToList();
+                    
 
                     return PartialView("_GetListDaLayMauChuaKq", result);
                 }
-
-
 
 
 
@@ -285,7 +371,7 @@ namespace TestNhanhCovid.Controllers
             }
         }
 
-        public async Task<IActionResult> GetListDaLayMauCoKq(string tenCongTy, string congSo2, DateTime tuNgay, DateTime denNgay)
+        public async Task<IActionResult> GetListDaLayMauCoKq(string tenCongTy, string congSo2, string nhanVien, DateTime tuNgay, DateTime denNgay)
         {
             try
             {
@@ -293,30 +379,40 @@ namespace TestNhanhCovid.Controllers
                 var denNgay1 = denNgay.AddDays(1).ToString("yyyyMMdd");
 
 
-                var resultAwait = await _iLayMauTestNhanhRepo.GetListDaKetQua(tuNgay1, denNgay1);
+                var resultAwait = await _iLayMauTestNhanhRepo.GetListDaKetQua(tuNgay1, denNgay1);                
 
-                if (tenCongTy == "0" && congSo2 == "0") //ds không có hợp đồng, ko có số 2
+                if (tenCongTy == "0" && congSo2 == "0" && nhanVien == "0") //ds không có hợp đồng, ko có số 2, ko có nhân viên
                 {
                     var result = resultAwait
-                    .Where(m => m.GhiChu is null || m.GhiChu.ToLower().Contains("nn")
-                    || m.GhiChu.ToLower().Contains("nv")
+                    .Where(m => m.GhiChu is null || m.GhiChu.ToLower().Contains("nn")                   
                     || m.GhiChu == "3" || m.GhiChu == "4" || m.GhiChu == "5")
                     .ToList();
 
                     return PartialView("_GetListDaLayMauCoKq", result);
                 }
-                else if (tenCongTy == "1" && congSo2 == "0") // có cty, ko có cổng 2
+                else if (tenCongTy == "1" && congSo2 == "0" && nhanVien == "0") // có cty, ko có cổng 2, ko nhan vien
                 {
                     var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
                     var result = result1
-                        .Where(m => m.GhiChu.ToLower() == "ck")
+                        .Where(m => m.GhiChu.ToLower().Contains("ck"))
                         .OrderBy(m => m.TenCongTy)
                         .ToList();
 
                     return PartialView("_GetListDaLayMauCoKq", result);
                 }
-                else if (tenCongTy == "0" && congSo2 == "1") // ko có cty, có cổng 2
+                else if (tenCongTy == "1" && congSo2 == "0" && nhanVien == "1") // có cty, ko có cổng 2, co nhan vien
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("ck") || m.GhiChu.ToLower().Contains("nv"))
+                        .OrderBy(m => m.TenCongTy)
+                        .ToList();
+
+                    return PartialView("_GetListDaLayMauCoKq", result);
+                }
+                else if (tenCongTy == "0" && nhanVien == "0" && congSo2 == "1") // ko có cty, ko nhan vien, có cổng 2
                 {
                     var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
@@ -326,40 +422,49 @@ namespace TestNhanhCovid.Controllers
 
                     return PartialView("_GetListDaLayMauCoKq", result);
                 }
+                else if (tenCongTy == "0" && nhanVien == "1" && congSo2 == "1") // ko có cty, có nhan vien, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower().Contains("nv"))
+                        .ToList();
+
+                    return PartialView("_GetListDaLayMauCoKq", result);
+                }
+                else if (tenCongTy == "0" && congSo2 == "0" && nhanVien == "1") // ko có cty, có nhan vien, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("nv"))
+                        .ToList();
+
+                    return PartialView("_GetListDaLayMauCoKq", result);
+                }
+                else if (tenCongTy == "1" && congSo2 == "1" && nhanVien == "0") // có cty, ko có nhan vien, có cổng 2
+                {
+                    var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
+
+                    var result = result1
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower().Contains("ck"))
+                        .ToList();
+
+                    return PartialView("_GetListDaLayMauCoKq", result);
+                }
                 else
                 {
                     var result1 = resultAwait.Where(m => m.GhiChu is not null).ToList();
 
                     var result = result1
-                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower() == "ck")
+                        .Where(m => m.GhiChu.ToLower().Contains("2") || m.GhiChu.ToLower().Contains("ck") || m.GhiChu.ToLower().Contains("nv"))
                         .OrderBy(m => m.TenCongTy)
                         .ToList();
+
 
                     return PartialView("_GetListDaLayMauCoKq", result);
                 }
 
-                //if (tenCongTy == "0") //ds không có hợp đồng
-                //{
-                //    var result = resultAwait
-                //        .Where(m => m.GhiChu is null)
-                //        .ToList();
-
-                //    return PartialView("_GetListDaLayMauCoKq", result);
-                //}
-                //else
-                //{
-                //    var result = resultAwait
-                //        .Where(m => m.TenCongTy is not null && m.GhiChu is not null)
-                //        .ToList();
-
-                //    return PartialView("_GetListDaLayMauCoKq", result);
-                //}
-
-
-                //var result = resultAwait.ToList();
-
-                //return PartialView("_GetListDaLayMauCoKq", result);
             }
             catch (Exception ex)
             {

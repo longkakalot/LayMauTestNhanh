@@ -32,8 +32,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 ">
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 ">
 
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 ">
+            <div class="float-right">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="0" id="ckNhanVien">
+                    <label class="form-check-label" for="ckNhanVien">
+                        Nhân viên
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 ">
             <div class="float-right">
@@ -128,14 +138,14 @@
 
     @section Scripts{
         <script>
-            function GetListChiDinhChuaLayMau(tenCongTy, congSo2) {
+            function GetListChiDinhChuaLayMau(tenCongTy, congSo2, nhanVien) {
                 var tuNgay = $("#dtTuNgay").val();
                 var denNgay = $("#dtDenNgay").val();
                 $.ajax({
                     type: "GET",
                     url: "/Home/GetListChiDinhChuaLayMau",
                     //data: JSON.stringify(objArr),
-                    data: { 'tenCongTy': tenCongTy, 'congSo2': congSo2, 'tuNgay': tuNgay, 'denNgay': denNgay },
+                    data: { 'tenCongTy': tenCongTy, 'congSo2': congSo2, 'nhanVien': nhanVien, 'tuNgay': tuNgay, 'denNgay': denNgay },
                     //contentType: "application/json; charset=utf-8",
                     dataType: "text",
                     success: function (responses) {
@@ -180,14 +190,14 @@
 
 
 
-            function GetListDaLayMauChuaKq(tenCongTy, congSo2) {
+            function GetListDaLayMauChuaKq(tenCongTy, congSo2, nhanVien) {
                 var tuNgay = $("#dtTuNgay").val();
                 var denNgay = $("#dtDenNgay").val();
                 $.ajax({
                     type: "GET",
                     url: "/Home/GetListDaLayMauChuaKq",
                     //data: JSON.stringify(objArr),
-                    data: { 'tenCongTy': tenCongTy, 'congSo2': congSo2, 'tuNgay': tuNgay, 'denNgay': denNgay },
+                    data: { 'tenCongTy': tenCongTy, 'congSo2': congSo2, 'nhanVien': nhanVien, 'tuNgay': tuNgay, 'denNgay': denNgay },
                     //contentType: "application/json; charset=utf-8",
                     dataType: "text",
                     success: function (responses) {
@@ -206,14 +216,14 @@
                 });
             }
 
-            function GetListDaLayMauCoKq(tenCongTy, congSo2) {
+            function GetListDaLayMauCoKq(tenCongTy, congSo2, nhanVien) {
                 var tuNgay = $("#dtTuNgay").val();
                 var denNgay = $("#dtDenNgay").val();
                 $.ajax({
                     type: "GET",
                     url: "/Home/GetListDaLayMauCoKq",
                     //data: JSON.stringify(objArr),
-                    data: { 'tenCongTy': tenCongTy, 'congSo2': congSo2, 'tuNgay': tuNgay, 'denNgay': denNgay },
+                    data: { 'tenCongTy': tenCongTy, 'congSo2': congSo2, 'nhanVien': nhanVien,  'tuNgay': tuNgay, 'denNgay': denNgay },
                     //contentType: "application/json; charset=utf-8",
                     dataType: "text",
                     success: function (responses) {
@@ -232,54 +242,178 @@
                 });
             }
 
-            $(document).ready(function () {
-                
-                $("#ckTenCongTy").click(function () {
+            function KiemTraCheckBox() {
                     var congSo2 = "";
                     if ($("#ckCongSo2").is(":checked")) {
                         congSo2 = "1";
                     }
                     else {
                         congSo2 = "0";
-                    }
+                }
 
-                    if ($("#ckTenCongTy").is(":checked")) {
-                        GetListChiDinhChuaLayMau('1', congSo2);
-                        GetListDaLayMauChuaKq('1', congSo2);
-                        GetListDaLayMauCoKq('1', congSo2);
-                    } else {
-                        GetListChiDinhChuaLayMau('0', congSo2);
-                        GetListDaLayMauChuaKq('0', congSo2);
-                        GetListDaLayMauCoKq('0', congSo2);
-                    }
-                });
-
-                $("#ckCongSo2").click(function () {
-                    var tenCongTy = "";
+                var tenCongTy = "";
                     if ($("#ckTenCongTy").is(":checked")) {
                         tenCongTy = "1";
                     }
                     else {
                         tenCongTy = "0";
-                    }
+                }
 
-                    if ($("#ckCongSo2").is(":checked")) {
-                        GetListChiDinhChuaLayMau(tenCongTy, '1');
-                        GetListDaLayMauChuaKq(tenCongTy, '1');
-                        GetListDaLayMauCoKq(tenCongTy, '1');
-                    } else {
-                        GetListChiDinhChuaLayMau(tenCongTy, '0');
-                        GetListDaLayMauChuaKq(tenCongTy, '0');
-                        GetListDaLayMauCoKq(tenCongTy, '0');
-                    }
+                var nhanVien = "";
+                if ($("#ckNhanVien").is(":checked")) {
+                    nhanVien = "1";
+                }
+                else {
+                    nhanVien = "0";
+                }
+
+                //if ($("#ckTenCongTy").is(":checked")
+                //    && !$("#ckNhanVien").is(":checked")
+                //    && !$("#ckCongSo2").is(":checked")) {
+                //    GetListChiDinhChuaLayMau(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauChuaKq(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauCoKq(tenCongTy, congSo2, nhanVien);
+
+
+                //    //GetListChiDinhChuaLayMau('1', '0', '0');
+                //    //GetListDaLayMauChuaKq('1', '0', '0');
+                //    //GetListDaLayMauCoKq('1', '0', '0');
+                //} else if ($("#ckTenCongTy").is(":checked")
+                //    && $("#ckNhanVien").is(":checked")
+                //    && !$("#ckCongSo2").is(":checked")) {
+                //    GetListChiDinhChuaLayMau(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauChuaKq(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauCoKq(tenCongTy, congSo2, nhanVien);
+                //    //GetListChiDinhChuaLayMau('1', '0', '1');
+                //    //GetListDaLayMauChuaKq('1', '0', '1');
+                //    //GetListDaLayMauCoKq('1', '0', '1');
+                //} else if (!$("#ckTenCongTy").is(":checked")
+                //    && $("#ckCongSo2").is(":checked")
+                //    && !$("#ckNhanVien").is(":checked")) {
+                //    GetListChiDinhChuaLayMau(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauChuaKq(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauCoKq(tenCongTy, congSo2, nhanVien);
+                //    //GetListChiDinhChuaLayMau('0', '1', '0');
+                //    //GetListDaLayMauChuaKq('0', '1', '0');
+                //    //GetListDaLayMauCoKq('0', '1', '0');
+                //} else if (!$("#ckTenCongTy").is(":checked")
+                //    && $("#ckCongSo2").is(":checked")
+                //    && $("#ckNhanVien").is(":checked")) {
+                //    GetListChiDinhChuaLayMau(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauChuaKq(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauCoKq(tenCongTy, congSo2, nhanVien);
+                //    //GetListChiDinhChuaLayMau('0', '1', '1');
+                //    //GetListDaLayMauChuaKq('0', '1', '1');
+                //    //GetListDaLayMauCoKq('0', '1', '1');
+                //} else if ($("#ckTenCongTy").is(":checked")
+                //    && $("#ckCongSo2").is(":checked")
+                //    && $("#ckNhanVien").is(":checked")) {
+                //    GetListChiDinhChuaLayMau(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauChuaKq(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauCoKq(tenCongTy, congSo2, nhanVien);
+                //    //GetListChiDinhChuaLayMau('1', '1', '1');
+                //    //GetListDaLayMauChuaKq('1', '1', '1');
+                //    //GetListDaLayMauCoKq('1', '1', '1');
+                //} else {
+                //    GetListChiDinhChuaLayMau(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauChuaKq(tenCongTy, congSo2, nhanVien);
+                //    GetListDaLayMauCoKq(tenCongTy, congSo2, nhanVien);
+                //    //GetListChiDinhChuaLayMau('0', '0', '0');
+                //    //GetListDaLayMauChuaKq('0', '0', '0');
+                //    //GetListDaLayMauCoKq('0', '0', '0');
+                //}
+                GetListChiDinhChuaLayMau(tenCongTy, congSo2, nhanVien);
+                GetListDaLayMauChuaKq(tenCongTy, congSo2, nhanVien);
+                GetListDaLayMauCoKq(tenCongTy, congSo2, nhanVien);
+
+            }
+
+            $(document).ready(function () {
+                
+                //$("#ckTenCongTy").click(function () {
+                //    var congSo2 = "";
+                //    if ($("#ckCongSo2").is(":checked")) {
+                //        congSo2 = "1";
+                //    }
+                //    else {
+                //        congSo2 = "0";
+                //    }
+
+                //    if ($("#ckTenCongTy").is(":checked")
+                //        && !$("#ckNhanVien").is(":checked")
+                //        && !$("#ckCongSo2").is(":checked")) {
+                //        GetListChiDinhChuaLayMau('1', '0','0');
+                //        GetListDaLayMauChuaKq('1', '0', '0');
+                //        GetListDaLayMauCoKq('1', '0', '0');
+                //    } else if ($("#ckTenCongTy").is(":checked")
+                //        && $("#ckNhanVien").is(":checked")
+                //        && !$("#ckCongSo2").is(":checked")) {
+                //        GetListChiDinhChuaLayMau('1', '0', '1');
+                //        GetListDaLayMauChuaKq('1', '0', '1');
+                //        GetListDaLayMauCoKq('1', '0', '1');
+                //    } else if (!$("#ckTenCongTy").is(":checked")
+                //        && $("#ckCongSo2").is(":checked")
+                //        && !$("#ckNhanVien").is(":checked")) {
+                //        GetListChiDinhChuaLayMau('0', '1', '0');
+                //        GetListDaLayMauChuaKq('0', '1', '0');
+                //        GetListDaLayMauCoKq('0', '1', '0');
+                //    } else if (!$("#ckTenCongTy").is(":checked")
+                //        && $("#ckCongSo2").is(":checked")
+                //        && $("#ckNhanVien").is(":checked")) {
+                //        GetListChiDinhChuaLayMau('0', '1', '1');
+                //        GetListDaLayMauChuaKq('0', '1', '1');
+                //        GetListDaLayMauCoKq('0', '1', '1');
+                //    } else if ($("#ckTenCongTy").is(":checked")
+                //        && $("#ckCongSo2").is(":checked")
+                //        && $("#ckNhanVien").is(":checked")) {
+                //        GetListChiDinhChuaLayMau('1', '1', '1');
+                //        GetListDaLayMauChuaKq('1', '1', '1');
+                //        GetListDaLayMauCoKq('1', '1', '1');
+                //    } else {
+                //        GetListChiDinhChuaLayMau('0', '0', '0');
+                //        GetListDaLayMauChuaKq('0', '0', '0');
+                //        GetListDaLayMauCoKq('0', '0', '0');
+                //    }
+                //});
+
+                //$("#ckCongSo2").click(function () {
+                //    var tenCongTy = "";
+                //    if ($("#ckTenCongTy").is(":checked")) {
+                //        tenCongTy = "1";
+                //    }
+                //    else {
+                //        tenCongTy = "0";
+                //    }
+
+                //    if ($("#ckCongSo2").is(":checked")) {
+                //        GetListChiDinhChuaLayMau(tenCongTy, '1');
+                //        GetListDaLayMauChuaKq(tenCongTy, '1');
+                //        GetListDaLayMauCoKq(tenCongTy, '1');
+                //    } else {
+                //        GetListChiDinhChuaLayMau(tenCongTy, '0');
+                //        GetListDaLayMauChuaKq(tenCongTy, '0');
+                //        GetListDaLayMauCoKq(tenCongTy, '0');
+                //    }
+                //});
+
+                $("#ckTenCongTy").click(function () {
+                    KiemTraCheckBox();
+                });
+
+                $("#ckCongSo2").click(function () {
+                    KiemTraCheckBox();
+                });
+
+                $("#ckNhanVien").click(function () {
+                    KiemTraCheckBox();
                 });
 
                 
 
-                GetListChiDinhChuaLayMau('0','0');
+                GetListChiDinhChuaLayMau('0','0','0');
                 //GetListChiDinhDaLayMau();
-                GetListDaLayMauChuaKq('0','0');
-                GetListDaLayMauCoKq('0','0');
+                GetListDaLayMauChuaKq('0', '0', '0');
+                GetListDaLayMauCoKq('0', '0', '0');
             });
         </script>
     }
